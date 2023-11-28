@@ -1,0 +1,297 @@
+= Pro Spring 6
+
+== Links
+
+- https://github.com/Apress/pro-spring-6[Github Books page]
+
+.Spring Framework detailed Modules
+[%header,cols=2*]
+|===
+|Module
+|Description
+
+|aop
+|This module contains all the classes you need to use Spring’s AOP features within your
+application. You also need to include this JAR in your application if you plan to use other
+features in Spring that use AOP, such as declarative transaction management. Moreover,
+classes that support integration with AspectJ are packed in this module.
+
+|aspects
+|This module contains all the classes for advanced integration with the AspectJ AOP library.
+For example, if you are using Java classes for your Spring configuration and need AspectJstyle annotation-driven transaction management, you need this module.
+|beans
+|This module contains all the classes for supporting Spring’s manipulation of Spring beans.
+Most of the classes here support Spring’s bean factory implementation. For example, the
+classes required for processing the Spring XML configuration file and Java annotations are
+packed into this module.
+|context
+|This module contains classes that provide many extensions to Spring Core. You will find that
+all classes need to use Spring’s ApplicationContext feature (covered in Chapter 5), along
+with classes for Enterprise JavaBeans (EJB), Java Naming and Directory Interface (JNDI), and
+Java Management Extensions (JMX) integration. Also contained in this module are the Spring
+remoting classes, classes for integration with dynamic scripting languages (for example,
+JRuby, Groovy, and BeanShell), JSR-303 (“Bean Validation”), scheduling and task execution,
+and so on.
+|context-indexer
+|This module contains an indexer implementation that provides access to the candidates that
+are defined in META-INF/spring.components. The core class CandidateComponentsIndex is
+not meant to be used externally.
+|context-support
+|This module contains further extensions to the spring-context module. On the userinterface side, there are classes for mail support and integration with templating engines
+such as Velocity, FreeMarker, and JasperReports. Also, integration with various task execution
+and scheduling libraries, including CommonJ and Quartz, are packaged here.
+|core
+|This is the main module that you will need for every Spring application. In this JAR file, you
+will find all the classes that are shared among all other Spring modules (for example, classes
+for accessing configuration files). Also, in this JAR you will find selections of extremely useful
+utility classes that are used throughout the Spring codebase and that you can use in your own
+application.
+|expression
+|This module contains all support classes for Spring Expression Language (SpEL).
+|instrument
+|This module includes Spring’s instrumentation agent for JVM bootstrapping. This JAR file is
+required for using load-time weaving with AspectJ in a Spring application.
+|jcl
+|This module is only present for binary compatibility with existing Commons Logging usage,
+such as in Apache Commons Configuration.
+|jdbc
+|This module includes all classes for JDBC support. You will need this module for all
+applications that require database access. Classes for supporting data sources, JDBC data
+types, JDBC templates, native JDBC connections, and so on, are packed in this module.
+|jms
+|This module includes all classes for Java Message Service (JMS) support.
+|messaging
+|This module contains key abstractions taken from the Spring Integration project to serve as
+a foundation for message-based applications and adds support for Simple or Streaming Text
+Orientated Messaging Protocol (STOMP) messages.
+|orm
+|This module extends Spring’s standard JDBC feature set with support for popular ORM
+tools including Hibernate, JDO, and JPA. Many of the classes in this JAR depend on classes
+contained in the spring-jdbc JAR file, so you definitely need to include that in your
+application as well.
+|oxm
+|This module provides support for Object/XML Mapping (OXM). Classes for the abstraction
+of XML marshalling and unmarshalling and support for popular tools such as Castor, JAXB,
+XMLBeans, and XStream are packed into this module.
+|r2dbc
+|This module makes R2DBC easier to use and reduces the likelihood of common errors. It
+provides simple error handling and a family of unchecked concise exceptions agnostic of the
+underlying Reactive Database Manager (RDBM)
+|test
+|Spring provides a set of mock classes to aid in testing your applications, and many of
+these mock classes are used within the Spring test suite, so they are well tested and
+make testing your applications much simpler. Certainly we have found great use for the
+mock HttpServletRequest and HttpServletResponse classes in unit tests for our
+applications. On the other hand, Spring provides a tight integration with the JUnit unittesting framework, and many classes that support the development of JUnit test cases are
+provided in this module; for example SpringExtension integrates the Spring TestContext
+Framework into JUnit 5’s Jupiter programming model.
+|tx
+|This module provides all classes for supporting Spring’s transaction infrastructure. You will
+find classes from the transaction abstraction layer to support the Java Transaction API (JTA)
+and integration with application servers from major vendors.
+|web
+|This module contains the core classes for using Spring in your web applications, including
+classes for loading an ApplicationContext feature automatically, file upload support classes,
+and a bunch of useful classes for performing repetitive tasks such as parsing integer values
+from the query string.
+|webflux
+|This module contains core interfaces and classes for the Spring Web Reactive model.
+|webmvc
+|This module contains all the classes for Spring’s own MVC framework. If you are using a
+separate MVC framework for your application, you won’t need any of the classes from this
+JAR file.
+|websocket
+|This module provides support for JSR-356 (“Java API for WebSocket”).
+|===
+
+.Spring Boot Framework detailed Modules
+[%header,cols=2*]
+|===
+|Module
+|Description
+|spring-boot-starter
+|This is the simplest Spring Boot starter that adds the spring-core
+library as a dependency for your project. It can be used to create a very
+simple Spring application. It is used mostly for learning purposes and
+for creating base projects, and encapsulates common functionality
+shared among other modules in a project.
+|spring-boot-starter-aop
+|Adds the spring-aop library as a dependency for your project.
+|spring-boot-starter-data-*
+|This type of starter adds various Spring dependencies for working with
+data in your project. The * replaces the technology from which data is
+coming. For example, spring-boot-starter-data-jdbc adds classes
+for creating Spring Repository beans for handling data from databases
+supporting a JDBC driver: MySQL, PostgreSQL, Oracle, etc.
+|spring-boot-starter-web
+|Configures minimal dependencies for creating a web application.
+|spring-boot-starter-security
+|Configures minimal dependencies for securing a Spring web
+application.
+|spring-boot-starter-webflux
+|Configures minimal dependencies for creating a reactive web
+application.
+|spring-boot-starter-actuator
+|Configures the Spring Boot Actuator, which enables a set of endpoints
+for monitoring a Spring web application.
+|spring-boot-starter-test
+|Configures the following set of libraries: Spring Test, JUnit, Hamcrest,
+and Mockito.
+|===
+
+.Spring Boot BOM
+[source,xml]
+----
+<dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${springboot.bom-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+</despendencyManagement>
+----
+
+* Using SpringLoader is the Java way of using dependency injection in your application and removes the necessity of writing all that glue code
+
+* Injection vs.
+Lookup: The biggest reason to choose injection over lookup is that it makes your life easier, you write substantially less code when you are using injection
+
+* Constructor injection also helps achieve the use of immutable objects
+
+=== Inversion Of Control Spring
+
+* Inversion of control is a big part of what Spring does, the core of Spring’s implementation is based on dependency injection, although dependency lookup features are provided as well
+
+=== Beans and BeanFactory
+
+.Bean-factory common implementations
+image::../thumbs/BeanFactory.png[]
+
+* The _org.springframework.beans_ and _org.springframework.context_ packages are the basis for Spring Framework’s IoC container.
+* In developing Spring-based applications, it’s recommended that you interact with Spring via the ApplicationContext interface
+
+* Stereotypes in Spring are, @Service is used to define a service bean, which is a more complex functional bean that provides services that other beans may require, and @Repository is used to define a bean that is used to retrieve/save data from/to a database.
+And @Component is the annotation that marks a class as a bean declaration.
+@Component is a meta-annotation
+
+* Component scanning is a time-consuming operation, and it is good programming practice to try to limit the places where Spring will look for bean definitions in the codebase, from legacy code we ca use bean definitions from an XML file (or more) using @ImportResource
+
+* Spring supports use of the @Inject annotation introduced as part of JSr-299 (“Contexts and dependency Injection for the Java EE platform”), later moved to JSr-330 (“dependency Injection for Java”).
+@Inject is equivalent in behavior to Spring’s @Autowired annotation and currently is part of the jakarta.inject-api library.
+
+.Using Qualifier and Autowired
+[source,java]
+----
+@Configuration
+class MyClass {
+  @Bean
+  List<Song> list() {
+    return List.of(new Song("Not the End"), new Song("Rise up"));
+  }
+
+  @Bean Song songOne() {}
+}
+@Component
+class MyOtherClass {
+  @Autowired
+  @Qualifier("list") // list Bean
+  List<Song> songs;
+}
+
+----
+
+.Bean name Customization
+[source,java]
+----
+@Configuration
+@ComponentScan(nameGenerator = SimpleBeanNameGenerator.class)
+class BeanNamingCfg {
+}
+class SimpleBeanNameGenerator extends AnnotationBeanNameGenerator {
+@Override
+protected String buildDefaultBeanName(BeanDefinition definition, BeanDefinitionRegistry
+registry) {
+var beanName = definition.getBeanClassName().substring(definition.
+getBeanClassName().lastIndexOf(".") + 1).toLowerCase(Locale.ROOT);
+var uid = UUID.randomUUID().toString().replace("-","").substring(0,8);
+return beanName + "-" + uid;
+}
+}
+----
+
+=== Instantiation Mode
+
+. In general, singletons should be used in the following scenarios:
+• Shared object with no state: You have an object that maintains no state and has many dependent objects.
+Because you do not need synchronization if there is no state, you do not need to create a new instance of the bean each time a dependent object needs to use it for some processing.
+• Shared object with read-only state: This is similar to the previous point, but you have some read-only state.
+In this case, you still do not need synchronization, so creating an instance to satisfy each request for the bean is just adding overhead.
+• Shared object with shared state: If you have a bean that has state that must be shared, singleton is the ideal choice.
+In this case, #_ensure that your synchronization for state writes is as granular as possible_#.
+• High-throughput objects with writable state: If you have a bean that is used a great deal in your application, you may find that keeping a singleton and synchronizing all write access to the bean state allows for better performance than constantly creating hundreds of instances of the bean.
+When using this approach, try to keep the synchronization as granular as possible without sacrificing consistency.
+You will find that this approach is particularly useful when your application creates a large number of instances over a long period of time, when your shared object has only a small amount of writable state, or when the instantiation of a new instance is expensive.
+
+. You should consider using non-singletons in the following scenarios:
+• Objects with writable state: If you have a bean that has a lot of writable state, you may find that the cost of synchronization is greater than the cost of creating a new instance to handle each request from a dependent object.
+• Objects with private state: Some dependent objects need a bean that has private state so that they can conduct their processing separately from other objects that depend on that bean.
+In this case, singleton is clearly not suitable, and you should use nonsingleton.
+
+=== Beans Life Cycle
+
+.Beans Life Cycle
+image::../thumbs/BeanLifeCycle.png[]
+
+=== InitializingBean Interface
+
+* The InitializingBean interface defined in Spring allows you to define inside your bean code for Spring to execute after it has finished configuring the bean
+
+.All Init methods
+[source,bash]
+----
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean 'org.
+springframework.context.annotation.internalConfigurationAnnotationProcessor'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean 'org.
+springframework.context.event.internalEventListenerProcessor'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean 'org.
+springframework.context.event.internalEventListenerFactory'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean 'org.
+springframework.context.annotation.internalAutowiredAnnotationProcessor'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean 'org.
+springframework.context.annotation.internalCommonAnnotationProcessor'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean
+'multiInitConfiguration'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean
+'dependency'
+DEBUG: DefaultSingletonBeanRegistry - Creating shared instance of singleton bean
+'multiInitBean
+[INFO] Running com.apress.springfulls.journey.procore.chapter04.AppTest
+2023-11-06 13:56:12.092 INFO  main [ c.a.s.j.p.c.f.MultiInit  ]
+        - 1. Calling constructor for bean of type class com.apress.springfulls.journey.procore.chapter04.full.MultiInit.
+2023-11-06 13:56:12.109 INFO  main [ c.a.s.j.p.c.f.MultiInit  ]
+        - 2. Calling setDependency for bean of type class com.apress.springfulls.journey.procore.chapter04.full.MultiInit.
+2023-11-06 13:56:12.109 INFO  main [ c.a.s.j.p.c.f.MultiInit  ]
+        - 3. Calling postConstruct() for bean of type class com.apress.springfulls.journey.procore.chapter04.full.MultiInit.
+2023-11-06 13:56:12.110 INFO  main [ c.a.s.j.p.c.f.MultiInit  ]
+        - 4. Calling afterPropertiesSet() for bean of type class com.apress.springfulls.journey.procore.chapter04.full.MultiInit.
+2023-11-06 13:56:12.110 INFO  main [ c.a.s.j.p.c.f.MultiInit  ]
+        - 5. Calling initMethod() for bean of type class com.apress.springfulls.journey.procore.chapter04.full.MultiInit.
+----
+
+IMPORTANT: The name of the method _destroySingletons()_ gives a hint about an important detail.
+Spring only performs bean destruction for singleton beans.
+Beans with other scopes than singleton do not have their life cycle fully managed by Spring. for example, for prototype beans, the Spring container instantiates, configures, and otherwise assembles a prototype object, and hands it to the client, with no further record of that prototype instance
+
+* Using the _ApplicationContextAware_ interface, it is possible for your beans to get a reference to the ApplicationContext instance that configured them.
+You should, however, avoid this practice and use dependency injection to provide your beans with their collaborators
+
+* Spring provides the _FactoryBean_ interface that acts as an adapter for objects that cannot be created and managed using the standard Spring semantics.
+
+WARNING: Spring automatically calls the getObject() method; it is a bad practice call that method manually
+
+* A feature of ApplicationContext not present in BeanFactory is the ability to publish and receive events by using ApplicationContext as a broker
+

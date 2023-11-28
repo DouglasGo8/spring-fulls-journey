@@ -1,0 +1,38 @@
+= Spring 6 Recipes A problem-Solution Approach to Spring Framework
+
+== Links
+
+- https://mvnrepository.com/artifact/org.springframework/spring-framework-bom[Spring Core Maven Repository]
+
+== Chapter01—Core Tasks
+
+. POJOs are classified in application layers. in Spring these layers are three: persistence, service, and presentation.
+@Component is a general-purpose annotation to decorate POJOs for Spring detection, whereas @Repository, @Service, and @Controller are specializations of @Component for more specific cases of POJOs associated with the persistence, service, and presentation layers.
+if you’re unsure about a POJO’s purpose, you can decorate it with the @Component annotation.
+However, it’s better to use the specialization annotations where possible, because these provide extra facilities based on a POJO’s purpose (e.g., @Repository causes exceptions to be wrapped up as DataAccessExceptions, which makes debugging easier).
+
+. Any method definitions decorated with the @Bean annotation generate a bean name based on the method name.
+Alternatively, you can explicitly specify the bean name in the @Bean annotation with the name attribute (e.g., @Bean(name="mys1") makes the bean available as mys1; if you explicitly specify the bean name, the method name is ignored for purposes of bean creation).
+
+[source,java]
+----
+@ComponentScan(
+includeFilters = {
+@ComponentScan.Filter(
+type = FilterType.REGEX,
+pattern = {
+"com.apress.spring6recipes.sequence.*Dao",
+"com.apress.spring6recipes.sequence.*Service"})}, excludeFilters = {
+@ComponentScan.Filter(
+type = FilterType.ANNOTATION,
+classes = {org.springframework.stereotype.Controller.class})})
+----
+
+When applying include filters to detect all classes whose name contains the word Dao or Service, even classes that don’t have annotations are auto-detected.
+
+.Dynamic load-time weaving
+[source,bash]
+----
+java --add-opens java.base/java.lang=ALL-UNNAMED -javaagent:lib/aspectjweaver-1.9.19.jar -
+jar chapter_01.jar
+----
