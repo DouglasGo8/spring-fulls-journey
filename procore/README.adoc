@@ -295,3 +295,154 @@ WARNING: Spring automatically calls the getObject() method; it is a bad practice
 
 * A feature of ApplicationContext not present in BeanFactory is the ability to publish and receive events by using ApplicationContext as a broker
 
+.Different Testing Categories Used in Practice
+[%header,cols=3*]
+|===
+|Test Category
+|Description
+|Common Tools
+
+|Logic unit test
+|A logic unit test takes a single object and tests it by itself,
+without worrying about the role it plays in the surrounding
+system.
+|Unit test: JUnit, TestNG;
+Mock objects: Mockito,
+EasyMock
+
+|Integration
+unit test
+|An integration unit test focuses on testing the interaction
+between components in a “near real” environment. These
+tests exercise the interactions with the container (embedded
+database, web container, and so on).
+|Embedded database: H2;
+Database testing: DbUnit;
+In-memory web container:
+Jetty
+
+|Front-end
+unit test
+|A front-end unit test focuses on testing the user interface. The
+objective is to ensure that each user interface reacts to users’
+actions and produces output to users as expected.
+|Selenium, Cypress
+
+|Continuous
+build and
+code quality
+test
+|The application code base should be built on a regular basis
+to ensure that the code quality complies with the standard
+(for example, comments are all in place, no empty exception
+catch block, and so on). Also, test coverage should be as high
+as possible to ensure that all developed lines of codes are
+tested.
+|Code quality: PMD, Checkstyle,
+FindBugs, Sonar;
+Test coverage: Cobertura,
+EclEmma; Build tool:
+Gradle, Maven; Continuous
+build: Hudson, Jenkins
+
+|System
+integration
+test
+|A system integration test verifies the accuracy of
+communication among all programs in the new system
+and between the new system and all external interfaces.
+The integration test must also prove that the new system
+performs according to the functional specifications and
+functions effectively in the operating environment without
+adversely affecting other systems.
+|IBM Rational Functional
+Tester, HP Unified
+Functional Testing
+
+|System quality test
+|system quality test ensures that the developed application meets those nonfunctional requirements. Most of the time, this tests the performance of the application to ensure that the target requirements for concurrent users of the system and workload are met. Other nonfunctional requirements include security, high-availability features, and so on.
+|Apache JMeter, HP LoadRunner, Locust, K6
+
+|User acceptance test
+|A user acceptance test simulates the actual working conditions of the new system, including the user manuals and procedures. Extensive user involvement in this stage of testing provides the user with invaluable training in operating the new system. It also benefits the programmer or designer to see the user experience with the new programs. This joint involvement encourages the user and operations personnel to approve the system conversion.
+|IBM Rational TestManager, HP Quality Center
+
+|===
+
+.Spring specialized test annotations
+[%header,cols=2*]
+|===
+|Annotation
+|Description
+
+|@BootstrapWith
+|Class-level annotation used to determine how to bootstrap the Spring TestContext Framework.
+
+|@ContextConfiguration
+|Class-level annotation used to determine how to load and configure an ApplicationContext for integration tests.
+When using Junit 4, annotation test classes need to be
+annotated with @RunWith(SpringRunner.class). When
+using Junit Jupiter, test classes need to be annotated with
+@ExtendWith(SpringExtension.class).
+
+|@WebAppConfiguration
+|Class-level annotation used to indicate the ApplicationContext loaded should be a WebApplicationContext.
+
+|@ContextHierarchy
+|Class-level annotation used to define a hierarchy of ApplicationContexts for integration tests.
+
+|@DirtiesContext
+|Class- and method-level annotation used to indicate that the context has been modified or corrupted in some way during the execution of the test and should be closed and rebuilt for subsequent tests.
+
+|@ActiveProfiles
+|Class-level annotation indicating which bean profile should be active.
+
+|@TestPropertySource
+|Class-level annotation used to configure locations of properties files and inlined properties to be added to the Environment’s set of PropertySources for an ApplicationContext for integration tests.
+
+|@DynamicPropertySource
+|Method-level annotation for integration tests that need to add properties with dynamic values to the Environment’s set of PropertySources.
+
+|@TestExecutionListeners
+|Class-level annotation for configuring TestExecutionListeners that should be registered with the TestContextManager.
+
+|@RecordApplicationEvents
+|Class-level annotation used to record all application events published in the ApplicationContext during the execution of a single test.
+
+|@Commit
+|Class- and method-level annotation that is used to indicate that a test-managed transaction should be committed after the test method has completed.
+
+|@Rollback
+|Class- and method-level annotation that is used to indicate whether a test-managed transaction should be rolled back after the test method has completed. As expected, @Rollback(false) is equivalent to @Commit.
+
+|@BeforeTransaction
+|Method-level annotation indicating that the annotated method should be called before a transaction is started for test methods marked with the @Transactional annotation.
+
+|@AfterTransaction
+|Method-level annotation indicating that the annotated method should be called after a transaction has ended for test methods marked with the @Transactional annotation.
+
+|@Sql
+|Class- and method-level annotation used to configure SQL scripts and statements to be executed against a given database during integration tests.
+
+|@SqlConfig
+|Class and method-level annotation used to indicate how to parse and execute SQL scripts configured via the @Sql annotation.
+
+|@SqlMergeMode
+|Class and method-level annotation used to indicate whether method-level @Sql declarations are merged with class-level @Sql declarations.
+
+|@SqlGroup
+|Container-level annotation that aggregates several @Sql annotations.
+
+|@IfProfileValue
+|Class and method-level annotation used to indicate that the test method should be enabled for a specific set of environmental conditions.
+
+|@ProfileValueSourceConfiguration
+|Class-level annotation used to specify the ProfileValueSource used by @IfProfileValue. If this annotation is not declared on the test, SystemProfileValueSource is used as the default.
+
+|@Timed
+|Method-level annotation used to indicate that the test must finish in the specified time period.
+
+|@Repeat
+|Method-level annotation used to indicate that the annotated test method should be repeated the specified number of times.
+
+|===
