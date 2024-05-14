@@ -1,36 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-    
   <parent>
-        
     <artifactId>spring-fulls-journey</artifactId>
-        
     <groupId>com.apress.springfulls.journey</groupId>
-        
     <version>0.1.0</version>
-      
   </parent>
-    
   <groupId>com.apress.springfulls.journey.procore</groupId>
-    
   <artifactId>procore</artifactId>
-    
   <version>0.1.0</version>
-    
   <packaging>pom</packaging>
-    
   <name>Core Pro :: A problem-Solution Approach to Spring Framework</name>
-    
   <modules>
-        
     <module>chapter02</module>
-        
     <module>chapter03</module>
-        
     <module>chapter04</module>
-      
   </modules>
-  
 </project>

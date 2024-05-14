@@ -13,6 +13,7 @@ import com.apress.springfulls.journey.procore.chapter04.factory.MessageDigestFac
 import com.apress.springfulls.journey.procore.chapter04.factory.MessageDigester;
 import com.apress.springfulls.journey.procore.chapter04.full.MultiInitConfiguration;
 import com.apress.springfulls.journey.procore.chapter04.initmethod.Singer;
+import com.apress.springfulls.journey.procore.chapter04.locale.MessageSourceConfig;
 import com.apress.springfulls.journey.procore.chapter04.profile.Food;
 import com.apress.springfulls.journey.procore.chapter04.profile.FoodProviderService;
 import com.apress.springfulls.journey.procore.chapter04.profile.HighSchoolConfig;
@@ -21,17 +22,22 @@ import com.apress.springfulls.journey.procore.chapter04.props.DiverseValuesConta
 import com.apress.springfulls.journey.procore.chapter04.props.ValuesHolder;
 import com.apress.springfulls.journey.procore.chapter04.propsource.AppProperty;
 import com.apress.springfulls.journey.procore.chapter04.propsource.PropDemoConfig;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.Resource;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -186,10 +192,70 @@ public class AppTest {
   }
 
   @Test
+  @Disabled
   public void propertySourceFromPropertyFileDemo() {
     try (var ctx = new AnnotationConfigApplicationContext(PropDemoConfig.class)) {
       var appProperty = ctx.getBean("appProperty", AppProperty.class);
       log.info("Outcome: {}", appProperty);
+    }
+  }
+
+  //-page 158
+  @Test
+  @Disabled
+  public void testPropertySourceOne() {
+    try (var ctx = new GenericApplicationContext()) {
+      var env = ctx.getEnvironment();
+      var propSources = env.getPropertySources();
+      //
+      var app = new HashMap<String, Object>();
+      app.put("user.home", "CUSTOM_USER_HOME");
+      propSources.addLast(new MapPropertySource("prospring6_MAP", app));
+      //
+      log.info("-- Env Variables from java.lang.System --");
+      log.info("user.home: " + System.getProperty("user.home"));
+      log.info("JAVA_HOME: " + System.getenv("JAVA_HOME"));
+      log.info("-- Env Variables from ConfigurableEnvironment --");
+      log.info("user.home: " + env.getProperty("user.home"));
+      log.info("JAVA_HOME: " + env.getProperty("JAVA_HOME"));
+    }
+  }
+
+  @Test
+  @Disabled
+  public void testPropertySourceTwo() {
+    try (var ctx = new GenericApplicationContext()) {
+      var env = ctx.getEnvironment();
+      var propSources = env.getPropertySources();
+      //
+      var app = new HashMap<String, Object>();
+      app.put("user.home", "CUSTOM_USER_HOME");
+      propSources.addFirst(new MapPropertySource("prospring6_MAP", app));
+      //
+      log.info("-- Env Variables from java.lang.System --");
+      log.info("user.home: " + System.getProperty("user.home"));
+      log.info("JAVA_HOME: " + System.getenv("JAVA_HOME"));
+      log.info("-- Env Variables from ConfigurableEnvironment --");
+      log.info("user.home: " + env.getProperty("user.home"));
+      log.info("JAVA_HOME: " + env.getProperty("JAVA_HOME"));
+    }
+
+
+
+  }
+
+
+  @Test
+  public void testLocaleResourceBundle() {
+    try (var ctx = new AnnotationConfigApplicationContext(MessageSourceConfig.class)) {
+      var english = Locale.ENGLISH;
+      var ukrainian = Locale.of("uk", "UA");
+
+      log.info(ctx.getMessage("msg", null, english));
+      log.info(ctx.getMessage("msg", null, ukrainian));
+      //
+      log.info(ctx.getMessage("nameMsg", new Object[]{ "Iuliana", "Cosmina" }, english));
+      log.info(ctx.getMessage("nameMsg", new Object[]{ "Iuliana", "Cosmina" }, ukrainian));
     }
   }
 

@@ -1,22 +1,20 @@
-package com.apress.springfulls.journey.procore.chapter03.configurable;
+package com.apress.springfulls.journey.procore.chapter04.impl.provider;
 
-
-import com.apress.springfulls.journey.procore.chapter03.renderer.MessageProvider;
-
+import com.apress.springfulls.journey.procore.chapter04.advconfig.MessageProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component("provider")
+@Component
 public class ConfigurableMessageProvider implements MessageProvider {
-
   private final String message;
 
   public ConfigurableMessageProvider(@Value("Text Sample") String message) {
     this.message = message;
   }
 
+
   @Override
-  public String getMessage() {
+  public String message() {
     return this.message;
   }
 }

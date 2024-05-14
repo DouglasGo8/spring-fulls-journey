@@ -2,7 +2,7 @@
 
 == Links
 
-- https://github.com/Apress/pro-spring-6[Github Books page]
+- https://github.com/Apress/pro-spring-6[GitHub Books page]
 
 .Spring Framework detailed Modules
 [%header,cols=2*]
@@ -446,3 +446,166 @@ using Junit Jupiter, test classes need to be annotated with
 |Method-level annotation used to indicate that the annotated test method should be repeated the specified number of times.
 
 |===
+
+.Different Testing Categories Used in Practice
+[%header,cols=3*]
+|===
+
+|Test Category
+|Description
+|Common Tools
+
+|Logic unit Test
+|A logic unit test takes a single object and tests it by itself, without worrying about the role it plays in the surrounding system.
+|Unit test: JUnit, TestNG; Mock objects: Mockito, EasyMock
+
+|Integration unit Test
+|An integration unit test focuses on testing the interaction between components in a “near real” environment. These tests exercise the interactions with the container (embedded database, web container, and so on).
+|Embedded database: H2; Database testing: DbUnit; In-memory web container: Jetty
+
+|Front-end unit test
+|A front-end unit test focuses on testing the user interface. The objective is to ensure that each user interface reacts to users’ actions and produces output to users as expected.
+|Selenium, Cypress
+
+|Continuous build and code quality test
+|The application code base should be built on a regular basis to ensure that the code quality complies with the standard (for example, comments are all in place, no empty exception catch block, and so on). Also, test coverage should be as high as possible to ensure that all developed lines of codes are tested.
+|Code quality: PMD, Check-style, FindBugs, Sonar; Test coverage: Cobertura, EclEmma; Build tool: Gradle, Maven; Continuous: Hudson, Jenkins, GitHub Actions
+
+|System Integration
+|A system integration test verifies the accuracy of communication among all programs in the new system and between the new system and all external interfaces. The integration test must also prove that the new system performs according to the functional specifications and functions effectively in the operating environment without adversely affecting other
+|IBM Rational Functional Tester, HP Unified Functional
+
+|System quality test
+|A system quality test ensures that the developed application meets those nonfunctional requirements. Most of the time, this tests the performance of the application to ensure that the target requirements for concurrent users of the system and workload are met. Other nonfunctional requirements include security, high-availability features, and so on.
+|Apache JMeter, HP LoadRunner, Locust, K6, Gatling
+
+|User acceptance test
+|A user acceptance test simulates the actual working conditions of the new system, including the user manuals and procedures. Extensive user involvement in this stage of testing provides the user with invaluable training in operating the new system. It also benefits the programmer or designer to see the user experience with the new programs. This joint involvement encourages the user and operations personnel to approve the system conversion.
+|IBM Rational TestManager, HP Quality Center
+
+|===
+
+.Spring specialized test annotations
+[%header,cols=2*]
+|===
+|Annotation
+|Description
+
+|@BootstrapWith
+|Class-level annotation used to determine how to bootstrap the Spring TestContext Framework.
+
+|@ContextConfiguration
+|Class-level annotation used to determine how to load and configure an ApplicationContext for integration tests.
+When using Junit 4, annotation test classes need to be
+annotated with @RunWith(SpringRunner.class). When
+using Junit Jupiter, test classes need to be annotated with
+@ExtendWith(SpringExtension.class).
+
+|@WebAppConfiguration
+|Class-level annotation used to indicate the ApplicationContext loaded should be a WebApplicationContext.
+
+|@ContextHierarchy
+|Class-level annotation used to define a hierarchy of ApplicationContexts for integration tests.
+
+|@DirtiesContext
+|Class- and method-level annotation used to indicate that the context has been modified or corrupted in some way during the execution of the test and should be closed and rebuilt for subsequent tests.
+
+|@ActiveProfiles
+|Class-level annotation indicating which bean profile should be active.
+
+|@TestPropertySource
+|Class-level annotation used to configure locations of properties files and inlined properties to be added to the Environment’s set of PropertySources for an ApplicationContext for integration tests.
+
+|@DynamicPropertySource
+|Method-level annotation for integration tests that need to add properties with dynamic values to the Environment’s set of PropertySources.
+
+|@TestExecutionListeners
+|Class-level annotation for configuring TestExecutionListeners that should be registered with the TestContextManager.
+
+|@RecordApplicationEvents
+|Class-level annotation used to record all application events published in the ApplicationContext during the execution of a single test.
+
+|@Commit
+|Class- and method-level annotation that is used to indicate that a test-managed transaction should be committed after the test method has completed.
+
+|@Rollback
+|Class- and method-level annotation that is used to indicate whether a test-managed transaction should be rolled back after the test method has completed. As expected, @Rollback(false) is equivalent to @Commit.
+
+|@BeforeTransaction
+|Method-level annotation indicating that the annotated method should be called before a transaction is started for test methods marked with the @Transactional annotation.
+
+|@AfterTransaction
+|Method-level annotation indicating that the annotated method should be called after a transaction has ended for test methods marked with the @Transactional annotation.
+
+|@Sql
+|Class- and method-level annotation used to configure SQL scripts and statements to be executed against a given database during integration tests.
+
+|@SqlConfig
+|Class- and method-level annotation used to indicate how to parse and execute SQL scripts configured via the @Sql annotation.
+
+|@SqlMergeMode
+|Class- and method-level annotation used to indicate whether method-level @Sql declarations is merged with class-level @Sql declarations.
+
+|@SqlGroup
+|Container-level annotation that aggregates several @Sql annotations.
+
+|@IfProfileValue
+|Class- and method-level annotation used to indicate that the test method should be enabled for a specific set of environmental conditions.
+
+|@ProfileValueSourceConfiguration
+|Class-level annotation used to specify the ProfileValueSource used by @IfProfileValue. If this annotation is not declared on the test, SystemProfileValueSource is used as the default.
+
+|@Timed
+|Method-level annotation used to indicate that the test must finish in the specified time period.
+
+|@Repeat
+|Method-level annotation used to indicate that the annotated test method should be repeated the specified number of times.
+|===
+
+=== Spring AOP
+
+AOP is often referred to as a tool for implementing crosscutting concerns.
+The term crosscutting concerns refers to logic in an application that cannot be decomposed from the rest of the application and may result in code duplication and tight coupling.
+
+By using AOP for modularizing individual pieces of logic, known as concerns, you can apply them to many parts of an application without duplicating the code or creating hard dependencies; Logging and security are typical examples of crosscutting concerns that are present in many applications.
+
+It is important to understand that AOP complements object-oriented programming (OOP), rather than competing with it
+
+==== Core Concepts of AOP
+
+* _Joinpoints_: A joinpoint is a well-defined point during the execution of your application.
+Typical examples of joinpoints include a call to a method, the method invocation itself, class initialization, and object instantiation.
+Joinpoints define the points in your application at which you can insert additional logic using AOP.
+
+* _Advice_: The code that is executed at a particular joinpoint is the advice, defined by a method in your class.
+There are many types of advice, such as before, which executes before the joinpoint, and after, which executes after it.
+
+* _Pointcuts_: A pointcut is a collection of joinpoints that you use to define when advice should be executed.
+By creating pointcuts, you gain fine-grained control over how you apply advice to the components in your application.
+As mentioned previously, a typical joinpoint is a method invocation, or the collection of all method invocations in a particular class.
+Often you can compose pointcuts in complex relationships to further constrain when advice is executed.
+
+* _Aspects_: An aspect is the combination of advice and pointcuts encapsulated in a class.
+This combination results in a definition of the logic that should be included in the application and where it should execute
+
+* _Weaving_: This is the process of inserting aspects into the application code at the appropriate point.
+For compile-time AOP solutions, this weaving is generally done at build time.
+Likewise, for runtime AOP solutions, the weaving process is executed dynamically at runtime.
+AspectJ supports another weaving mechanism called loadtime weaving (LTW), in which it intercepts the underlying JVM class loader and provides weaving to the bytecode when it is being loaded by the class loader
+
+* _Target_: An object whose execution flow is modified by an AOP process is referred to as the target object.
+Often you see the target object referred to as the advised object
+
+* _Introduction_: This is the process by which you can modify the structure of an object by introducing additional methods or fields to it.
+You can use introduction AOP to make any object implement a specific interface without needing the object’s class to implement that interface explicitly.
+
+==== Choosing an AOP Type
+
+Choosing whether to use static or dynamic AOP is quite a hard decision.
+Both have their own benefits, and you are not restricted to using only one type.
+In general, static AOP implementations have been around longer and tend to have more feature-rich implementations, with a greater number of available joinpoints.
+Typically, #if performance is absolutely critical or you need an AOP feature that is not implemented in Spring, you will want to use AspectJ.#
+In most other cases, Spring AOP is ideal.
+Keep in mind that many AOP-based solutions such as transaction management are already provided for you by Spring, so check the framework capabilities before rolling your own!
+As always, let the requirements of your application drive your choice of AOP implementation, and don’t restrict yourself to a single implementation if a combination of technologies would better suit your application.
+In general, Spring AOP is less complex than AspectJ, so it tends to be an ideal first choice.

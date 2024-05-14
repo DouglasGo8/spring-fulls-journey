@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 public record ConfigurableMessageProvider(String message) implements MessageProvider {
 
-  public ConfigurableMessageProvider(@Value("Configurable message") String message) {
+  public ConfigurableMessageProvider(@Value(value = "Configurable message") String message) {
     this.message = message;
   }
 }

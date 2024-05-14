@@ -13,7 +13,7 @@ public class AppProperty {
 
   @Override
   public String toString() {
-    return appHome + "/" + userHome;
+    return appHome + " " + userHome;
   }
 
 }

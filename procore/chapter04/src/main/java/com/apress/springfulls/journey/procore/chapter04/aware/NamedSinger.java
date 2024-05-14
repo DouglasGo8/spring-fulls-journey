@@ -14,6 +14,6 @@ public class NamedSinger implements BeanNameAware {
   }
 
   public void sing() {
-    log.info("Singer " + name + " - sing()");
+    log.info("Singer {} - sing()", name);
   }
 }
