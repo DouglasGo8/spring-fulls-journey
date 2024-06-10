@@ -8,10 +8,10 @@
     <version>1.0.0</version>
   </parent>
 
-  <groupId>com.apress.springfulls.journey.procore.chapter02</groupId>
-  <artifactId>chapter02</artifactId>
+  <groupId>com.apress.springfulls.journey.procore.chapter05</groupId>
+  <artifactId>chapter05</artifactId>
   <version>1.0.0</version>
 
-  <name>Core Pro :: A problem-Solution Approach to Spring Framework :: Chapter02</name>
+  <name>Core Pro :: A problem-Solution Approach to Spring Framework :: Chapter05</name>
 
 </project>

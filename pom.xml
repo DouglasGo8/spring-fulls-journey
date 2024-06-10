@@ -7,7 +7,7 @@
 
   <groupId>com.apress.springfulls.journey</groupId>
   <artifactId>spring-fulls-journey</artifactId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <name>Spring Core v06 :: Fulls Journey</name>

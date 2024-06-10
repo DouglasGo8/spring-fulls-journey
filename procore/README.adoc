@@ -604,8 +604,144 @@ You can use introduction AOP to make any object implement a specific interface w
 Choosing whether to use static or dynamic AOP is quite a hard decision.
 Both have their own benefits, and you are not restricted to using only one type.
 In general, static AOP implementations have been around longer and tend to have more feature-rich implementations, with a greater number of available joinpoints.
-Typically, #if performance is absolutely critical or you need an AOP feature that is not implemented in Spring, you will want to use AspectJ.#
-In most other cases, Spring AOP is ideal.
+Typically, #if performance is absolutely critical or you need an AOP feature that is not implemented in Spring, you will want to use AspectJ.# In most other cases, Spring AOP is ideal.
 Keep in mind that many AOP-based solutions such as transaction management are already provided for you by Spring, so check the framework capabilities before rolling your own!
 As always, let the requirements of your application drive your choice of AOP implementation, and don’t restrict yourself to a single implementation if a combination of technologies would better suit your application.
 In general, Spring AOP is less complex than AspectJ, so it tends to be an ideal first choice.
+
+==== Spring AOP Architecture
+
+There is no need for a special compilation process.
+The core architecture of Spring AOP is based on proxies.
+An advised instance of a class is the result of a ProxyFactory creating a proxy instance of that class with all the aspects woven into the proxy.
+
+Internally, Spring has two proxy implementations:
+
+* JDK dynamic proxies
+* CGLIB proxies
+
+By default, when the target object to be advised implements an interface, Spring will use a JDK dynamic proxy to create proxy instances of the target.
+However, when the advised target object doesn’t implement an interface (for example, it’s a concrete class), CGLIB will be used for proxy instance creation.
+One major reason is that the JDK dynamic proxy supports only the proxying of interfaces.
+We discuss proxies in detail in the section “Understanding Proxies.”
+
+==== Joinpoints in Spring
+
+One of the more noticeable simplifications in Spring AOP is that it supports only one joinpoint type: method invocation.
+At first glance, this might seem like a severe limitation if you are familiar with other AOP implementations such as AspectJ, which supports many more joinpoints, but in fact this makes Spring more accessible.
+The method invocation joinpoint is by far the most useful joinpoint available, and using it, you can achieve many of the tasks that make AOP useful in day-to-day programming.
+Remember that if you need to advise some code at a joinpoint other than a method invocation, you can always use Spring and AspectJ together.
+
+The _org.springframework.aop.framework.ProxyFactory_ class controls the weaving and proxy creation process in Spring AOP.
+A proxy is created for an *advised or target object*
+
+IMPORTANT: Starting with Spring 4, another implementation was added, org.springframework.aop.framework.ObjenesisCglibAopProxy, which extends CglibAopProxy to create proxy instances without invoking the constructor of the class.
+Tthis is useful when a class has a constructor with arguments, a constructor with side effects, and constructors that throw exceptions.
+
+.Spring specialized test annotations
+[%header,cols=3*]
+|===
+|Advice Name
+|Interface
+|Description
+
+|*Before*
+|_org.springframework.aop.BeforeAdvice_
+|Using before advice, you can perform custom processing before a joinpoint executes. A joinpoint in Spring is always a method invocation, which essentially allows you to perform preprocessing before the method executes. The before advice has full access to the target of the method invocation as well as the arguments passed to the method, but it has no control over the execution of the method itself. If the before advice throws an exception, further execution of the interceptor chain (as well as the target method) will be aborted, and the exception will propagate back up the interceptor chain.
+
+|*After-returning*
+|_org.springframework.aop.
+AfterReturningAdvice_
+|After-returning advice is executed after the method invocation at the joinpoint has finished executing and has returned a value. The after-returning advice has access to the target of the method invocation, the arguments passed to the method, and the return value. Because the method has already executed when the after-returning advice is invoked, it has no control over the method invocation at all. If the target method throws an exception, the after-returning advice will not be run, and the exception will be propagated up to the call stack as usual.
+
+|*After(finally)*
+|org.springframework.aop.
+AfterAdvice
+|After(finally) advice is executed no matter the result of the advised method. The advice is executed even when the advised method fails and an exception is thrown.
+
+|*Throws*
+|_org.springframework.aop.
+ThrowsAdvice_
+|Throws advice is executed after a method invocation returns, but only if that invocation threw an exception. It is possible for throws advice to catch only specific exceptions, and if you choose to do so, you can access the method that threw the exception, the arguments passed into the invocation, and the target of the invocation.
+
+|*Around*
+|_org.aopalliance.intercept.
+MethodInterceptor_
+|In Spring, around advice is modeled using the AOP Alliance standard of a method interceptor. Your advice is allowed to execute before and after the method invocation, and you can control the point at which the method invocation is allowed to proceed. You can choose to bypass the method altogether if you want, providing your own implementation of the logic.
+
+|*Introduction*
+|_org.springframework.aop.
+IntroductionInterceptor_
+|Spring models introductions as special types of interceptors. Using an introduction interceptor, you can specify the implementation for methods that are being introduced by the advice.
+
+
+|===
+
+We strongly recommend that you avoid the temptation to hard-code method checks into your advice and instead use pointcuts wherever possible to govern the applicability of advice to methods on the target.
+
+We also recommend you avoid advising methods needlessly.
+As you will see, this results in a noticeable drop in invocation speed that can have a large impact on the overall performance of your application.
+
+Static pointcuts perform much better than dynamic pointcuts because they avoid the need for an additional check per invocation
+
+In general, you rarely create your own Pointcut implementations from scratch because Spring provides abstract base classes for both static and dynamic pointcuts.
+
+As of version 4.0, Spring provides eight main implementations of the Pointcut interface: two abstract classes intended as convenience classes for creating static and dynamic pointcuts, and six concrete classes, one for each of the following:
+
+* Composing multiple pointcuts together
+
+* Handling control flow pointcuts
+
+* Performing simple name-based matching
+
+* Defining pointcuts using regular expressions
+
+* Defining pointcuts using AspectJ expressions
+
+* Defining pointcuts that look for specific annotations at the class or method level
+
+.Summary of _Spring Pointcut Implementations_
+[%header,cols=2*]
+|===
+|Implementation Class
+|Description
+
+|org.springframework.aop.support.
+annotation.AnnotationMatchingPointcut
+|This implementation looks for a specific Java annotation on a class or method. This class requires JDK 5 or higher.
+org.springframework.aop.
+|aspectj.AspectJExpressionPointcut
+|This implementation uses an AspectJ weaver to evaluate a pointcut expression in AspectJ syntax.
+|org.springframework.aop.support.
+ComposablePointcut
+|The ComposablePointcut class is used to compose two or more pointcuts together with operations such as union() and intersection().
+
+|org.springframework.aop.support.
+ControlFlowPointcut
+|ControlFlowPointcut is a special-case pointcut that matches all methods within the control flow of another method; that is, any method that is invoked either directly or indirectly as the result of another method being invoked.
+|org.springframework.aop.support.
+|DynamicMethodMatcherPointcut
+This implementation is intended as a base class for building dynamic pointcuts.
+
+|org.springframework.aop.support.
+JdkRegexpMethodPointcut
+|This implementation allows you to define pointcuts using JDK 1.4 regular expression support. This class requires JDK 1.4 or newer.
+|org.springframework.aop.support.
+NameMatchMethodPointcut
+|Using NameMatchMethodPointcut, you can create a pointcut that performs simple matching against a list of method names.
+
+|org.springframework.aop.support.
+*StaticMethodMatcherPointcut*
+|The StaticMethodMatcherPointcut class is intended as a base for building static pointcuts
+|===
+
+image::../thumbs/PointcutImplementation.png[]
+
+If the static check is not implemented, Spring performs a dynamic check each time the sing({key}) method is invoked.
+
+WARNING: Dynamic pointcuts offer a greater degree of flexibility than static pointcuts, but because of the additional runtime overhead they require, you should use a dynamic pointcut only when absolutely necessary.
+
+IMPORTANT: Declaring pointcuts by using expression language, using an AspectJ pointcut expression is the best way to go. Spring provides the class AspectJExpressionPointcut for defining pointcuts via AspectJ’s expression language
+
+
+
