@@ -741,7 +741,27 @@ If the static check is not implemented, Spring performs a dynamic check each tim
 
 WARNING: Dynamic pointcuts offer a greater degree of flexibility than static pointcuts, but because of the additional runtime overhead they require, you should use a dynamic pointcut only when absolutely necessary.
 
-IMPORTANT: Declaring pointcuts by using expression language, using an AspectJ pointcut expression is the best way to go. Spring provides the class AspectJExpressionPointcut for defining pointcuts via AspectJ’s expression language
+IMPORTANT: Declaring pointcuts by using expression language, using an AspectJ pointcut expression is the best way to go.
+Spring provides the class AspectJExpressionPointcut for defining pointcuts via AspectJ’s expression language
 
+Unlike the CGLIB proxy, the JDK proxy can generate proxies only of interfaces, not classes.
 
+IMPORTANT: There are some limitations when working with CGLIB proxies:
 
+. For obvious reasons, GLIB proxies cannot be created for final classes (since they cannot be subclassed).
+
+. Since static members belong to a class, not to an instance, they cannot be proxied.
+
+. Private methods cannot be proxied either, since a subclass cannot access them.
+
+Deciding which proxy to use is typically easy.
+The CGLIB proxy can proxy both classes and interfaces, whereas JDK proxies can proxy only interfaces.
+
+In terms of performance, #there is no significant difference between JDK and CGLIB standard mode (at least in running both advised and unadvised methods)#, unless you use CGLIB in frozen mode, in which case the advice chain can’t be changed and CGLIB performs further optimization when in frozen mode.
+
+When proxying a class, the CGLIB proxy is the default choice because it is the only proxy capable of generating a proxy of a class.
+
+To use the CGLIB proxy when proxying an interface, you must set the value of the optimize flag in ProxyFactory to true by using the setOptimize() method
+
+Sometimes you might need more flexibility when defining pointcuts.
+Spring provides two additional Pointcut implementations, ComposablePointcut and ControlFlowPointcut, which provide exactly the flexibility you need, be aware that you take a substantial performance hit for using control flow pointcuts over other pointcuts.

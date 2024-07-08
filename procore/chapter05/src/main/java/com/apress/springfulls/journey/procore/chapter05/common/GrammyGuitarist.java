@@ -11,7 +11,7 @@ public class GrammyGuitarist implements Singer {
   }
 
   public void sing(Guitar guitar) {
-    log.info("play: " + guitar.play());
+    log.info("play: {}", guitar.play());
   }
   public void talk(){
     log.info("talk");
