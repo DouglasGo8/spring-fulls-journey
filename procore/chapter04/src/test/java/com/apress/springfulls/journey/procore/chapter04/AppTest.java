@@ -42,8 +42,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class AppTest {
+
   @Test
-  @Disabled
   public void testInitMethod() {
     try (var ctx = new AnnotationConfigApplicationContext(SingerConfiguration.class)) {
       //
@@ -57,7 +57,6 @@ public class AppTest {
   }
 
   @Test
-  @Disabled
   public void initializeBeanTest() {
     try (var ctx = new AnnotationConfigApplicationContext(com.apress.springfulls.journey.procore.chapter04.intf.SingerConfiguration.class)) {
       getBeanFromInitF("singerOne", ctx);
@@ -67,7 +66,6 @@ public class AppTest {
   }
 
   @Test
-  @Disabled
   public void allInitMethod() {
     try (var ctx = new AnnotationConfigApplicationContext(MultiInitConfiguration.class)) {
     }
@@ -84,7 +82,7 @@ public class AppTest {
   }
 
   @Test
-  @Disabled
+
   public void awareDemo() {
     try (var ctx = new AnnotationConfigApplicationContext(AwareConfig.class)) {
       //ctx.close(); // needed to close the context
@@ -244,8 +242,8 @@ public class AppTest {
 
   }
 
-
   @Test
+  @Disabled
   public void testLocaleResourceBundle() {
     try (var ctx = new AnnotationConfigApplicationContext(MessageSourceConfig.class)) {
       var english = Locale.ENGLISH;

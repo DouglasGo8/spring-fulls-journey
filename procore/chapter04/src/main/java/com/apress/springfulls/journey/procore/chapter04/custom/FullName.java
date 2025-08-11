@@ -2,7 +2,7 @@ package com.apress.springfulls.journey.procore.chapter04.custom;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Getter
 @AllArgsConstructor

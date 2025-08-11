@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component(value = "injectSimpleSpEL")
 public class InjectSimpleSpELDemo {
 
+  // SpEL Expressions
+
   @Value("#{injectSimpleConfig.name.toUpperCase()}")
   private String name;
 }

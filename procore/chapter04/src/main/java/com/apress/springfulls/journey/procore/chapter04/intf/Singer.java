@@ -1,7 +1,8 @@
 package com.apress.springfulls.journey.procore.chapter04.intf;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.InitializingBean;
 
 @Slf4j
@@ -20,6 +21,11 @@ public class Singer implements InitializingBean {
   public void setAge(int age) {
     log.info("Calling setAge for bean of type {}.", Singer.class);
     this.age = age;
+  }
+
+  @PostConstruct
+  public void init() {
+    log.info("Calling init @PostConstructor/jsr-250 for bean of type {}.", Singer.class);
   }
 
   @Override

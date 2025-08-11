@@ -10,6 +10,9 @@ import com.apress.springfulls.journey.procore.chapter03.field.Inspiration;
 import com.apress.springfulls.journey.procore.chapter03.field.Singer;
 import com.apress.springfulls.journey.procore.chapter03.methodinjection.LockOpener;
 import com.apress.springfulls.journey.procore.chapter03.methodinjection.LookupConfig;
+import com.apress.springfulls.journey.procore.chapter03.nesting.ChildConfig;
+import com.apress.springfulls.journey.procore.chapter03.nesting.ParentConfig;
+import com.apress.springfulls.journey.procore.chapter03.nesting.Song;
 import com.apress.springfulls.journey.procore.chapter03.renderer.MessageRenderer;
 import com.apress.springfulls.journey.procore.chapter03.valinject.InjectSimpleConfig;
 import com.apress.springfulls.journey.procore.chapter03.valinject.InjectSimpleDemo;
@@ -41,6 +44,28 @@ public class AppTest {
       var singer = ctx.getBean(Singer.class);
       singer.sing();
     }
+
+  }
+
+  @Test
+  @Disabled
+  public void testNesting() {
+    var parentCtx = new AnnotationConfigApplicationContext();
+    parentCtx.register(ParentConfig.class);
+    parentCtx.refresh();
+    //
+    var childCtx = new AnnotationConfigApplicationContext();
+    childCtx.register(ChildConfig.class);
+    childCtx.setParent(parentCtx);
+    childCtx.refresh();
+    //
+    var song1 = childCtx.getBean("song1", Song.class);
+    var song2 = childCtx.getBean("song2", Song.class);
+    var song3 = childCtx.getBean("song3", Song.class);
+    //
+    log.info("from parent ctx: {}", song1.title());
+    log.info("from parent ctx: {}", song2.title());
+    log.info("from parent ctx: {}", song3.title());
 
   }
 
@@ -106,6 +131,7 @@ public class AppTest {
   }
 
   @Test
+  @Disabled
   public void autowiringDemo() {
     try (var ctx = new AnnotationConfigApplicationContext(AutowiringCfg.class)) {
       var target = ctx.getBean(Target.class);

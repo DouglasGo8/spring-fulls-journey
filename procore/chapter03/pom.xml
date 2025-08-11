@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>procore</artifactId>
-    <groupId>com.apress.springfulls.journey.procore</groupId>
+    <groupId>com.apress.sprincore.v06.procore</groupId>
     <version>1.0.0</version>
   </parent>
 
-  <groupId>com.apress.springfulls.journey.procore.chapter03</groupId>
+  <groupId>com.apress.sprincore.v06.procore.chapter03</groupId>
   <artifactId>chapter03</artifactId>
   <version>1.0.0</version>
 

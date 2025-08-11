@@ -2,26 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <artifactId>recipes</artifactId>
-    <groupId>com.apress.springfulls.journey.recipes</groupId>
-    <version>1.0.0</version>
+    <groupId>com.apress.sprincore.v06.recipes</groupId>
+    <version>1.0</version>
   </parent>
 
-  <groupId>com.apress.springfulls.journey.recipes.chapter01</groupId>
+  <groupId>com.apress.sprincore.v06.recipes.chapter01</groupId>
   <artifactId>chapter01</artifactId>
-  <version>1.0.0</version>
+  <version>1.0</version>
 
-  <name>Spring 6 Recipes :: A problem-Solution Approach to Spring Framework :: Chapter 01</name>
+  <name>Spring 6 Recipes :: A Problem-Solution Approach to Spring Framework :: Chapter 01 :: Ex 01-1</name>
 
-  <!--
-  <dependencies>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjweaver</artifactId>
-      <version>1.9.19</version>
-    </dependency>
-  </dependencies>
-  -->
 </project>

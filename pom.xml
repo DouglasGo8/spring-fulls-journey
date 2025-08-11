@@ -1,28 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.apress.springfulls.journey</groupId>
-  <artifactId>spring-fulls-journey</artifactId>
+  <groupId>com.apress.springcore.v06</groupId>
+  <artifactId>springcore-masterclass-v06</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
-
-  <name>Spring Core v06 :: Fulls Journey</name>
-
+  <name>Spring Core v06 :: Master Class</name>
   <properties>
-    <lombok.version>1.18.32</lombok.version>
+    <lombok.version>1.18.38</lombok.version>
     <java-core.version>21</java-core.version>
-    <spring-core.version>6.1.6</spring-core.version>
-    <mockito.version>5.11.0</mockito.version>
-    <junit-jupiter.version>5.10.2</junit-jupiter.version>
-    <maven-compiler.version>3.13.0</maven-compiler.version>
-    <maven-surefire.version>3.2.5</maven-surefire.version>
+    <logback.version>1.5.18</logback.version>
+    <mockito.version>5.17.0</mockito.version>
+    <spring-boot.version>3.5.0</spring-boot.version>
+    <spring-core.version>6.2.7</spring-core.version>
+    <junit-jupiter.version>5.12.2</junit-jupiter.version>
+    <maven-failsafe.version>3.5.3</maven-failsafe.version>
+    <maven-surefire.version>3.5.3</maven-surefire.version>
+    <maven-compiler.version>3.14.0</maven-compiler.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -32,9 +27,17 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!--
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      -->
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <!-- Spring Core -->
     <dependency>
@@ -69,23 +72,23 @@
     <dependency>
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
-      <version>3.0.0-M1</version>
+      <version>3.0.0</version>
     </dependency>
     <!-- Logger -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.12</version>
+      <version>2.0.17</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <version>1.5.6</version>
+      <version>${logback.version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.5.6</version>
+      <version>${logback.version}</version>
     </dependency>
     <!-- Misc -->
     <dependency>
@@ -94,9 +97,9 @@
       <version>${lombok.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.6</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.17.0</version>
     </dependency>
     <!-- Testing -->
     <dependency>
@@ -164,7 +167,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.2.5</version>
+          <version>${maven-failsafe.version}</version>
           <executions>
             <execution>
               <id>integration-test</id>

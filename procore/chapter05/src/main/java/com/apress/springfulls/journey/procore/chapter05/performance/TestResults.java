@@ -1,10 +1,11 @@
 package com.apress.springfulls.journey.procore.chapter05.performance;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Slf4j
 public class TestResults {
+
   public long advisedMethodTime;
   public long unadvisedMethodTime;
   public long equalsTime;

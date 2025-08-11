@@ -20,5 +20,4 @@ public class HelloConfiguration {
     return new StandardOutMessageRenderer(this.provider());
   }
 
-
 }

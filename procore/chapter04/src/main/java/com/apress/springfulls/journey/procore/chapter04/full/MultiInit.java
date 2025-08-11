@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AllArgsConstructor
 public class MultiInit implements InitializingBean {
 
-  Dependency dependency;
+  private Dependency dependency;
 
   public MultiInit() {
     log.info("1. Calling constructor for bean of type {}.", MultiInit.class);

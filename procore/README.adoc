@@ -562,6 +562,9 @@ using Junit Jupiter, test classes need to be annotated with
 |Method-level annotation used to indicate that the annotated test method should be repeated the specified number of times.
 |===
 
+.Spring beans life cycle
+image::../thumbs/SpringBeansLifeCycle.png[,]
+
 === Spring AOP
 
 AOP is often referred to as a tool for implementing crosscutting concerns.
@@ -625,7 +628,7 @@ However, when the advised target object doesn’t implement an interface (for ex
 One major reason is that the JDK dynamic proxy supports only the proxying of interfaces.
 We discuss proxies in detail in the section “Understanding Proxies.”
 
-==== Joinpoints in Spring
+==== Join points in Spring
 
 One of the more noticeable simplifications in Spring AOP is that it supports only one joinpoint type: method invocation.
 At first glance, this might seem like a severe limitation if you are familiar with other AOP implementations such as AspectJ, which supports many more joinpoints, but in fact this makes Spring more accessible.
@@ -765,3 +768,27 @@ To use the CGLIB proxy when proxying an interface, you must set the value of the
 
 Sometimes you might need more flexibility when defining pointcuts.
 Spring provides two additional Pointcut implementations, ComposablePointcut and ControlFlowPointcut, which provide exactly the flexibility you need, be aware that you take a substantial performance hit for using control flow pointcuts over other pointcuts.
+
+
+
+[%header,cols=2*]
+|===
+|Package
+|Description
+
+|org.springframework.jdbc.core
+|This package contains the foundations of JDBC classes in Spring. It includes the core JDBC class, #JdbcTemplate, which simplifies programming database operations with JDBC#. Several subpackages provide support of JDBC data access with more specific purposes (e.g., a JdbcTemplate class that supports named parameters) and related support classes as well.
+
+|org.springframework.jdbc.datasource
+|This package contains helper classes and DataSource implementations that you can use to run JDBC code outside a JEE container. Several subpackages provide support for embedded databases, database initialization, and various data source lookup mechanisms.
+
+|org.springframework.jdbc.object
+|This package contains classes that help convert the data returned from the database into objects or lists of objects. These objects and lists are plain Java objects and therefore are disconnected from the database.
+
+|org.springframework.jdbc.support
+|The most important class in this package is SQLException translation support. This allows Spring to recognize error codes used by the database and map them to higher-level exceptions.
+
+|org.springframework.jdbc.config
+|This package contains classes that support JDBC configuration within Spring’s ApplicationContext. For example, it contains classes used to work with embedded databases.
+
+|===

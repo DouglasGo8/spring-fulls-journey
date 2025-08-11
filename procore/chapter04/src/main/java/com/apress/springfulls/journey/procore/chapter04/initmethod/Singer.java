@@ -1,7 +1,7 @@
 package com.apress.springfulls.journey.procore.chapter04.initmethod;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Slf4j
 public class Singer {
@@ -20,7 +20,7 @@ public class Singer {
   }
 
   public void init() {
-    log.info("Initializing bean...");
+    log.info("Initializing bean on init method...");
     if (null == name) {
       log.info("Using default name");
       name = DEFAULT_NAME;
